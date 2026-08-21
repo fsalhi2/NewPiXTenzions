@@ -14,8 +14,6 @@ The E2E tests verify the entire "Stack" of the extension lifecycle:
 
 ```bash
 docker run --rm \
-  -v $(pwd)/src:/app \
-  -v $(pwd)/tests:/tests \
   -e PI_AUTH_RUNPOD="your_key" \
   pi-runtime timeout 15s bash /tests/e2e/test_tui.sh
 ```
