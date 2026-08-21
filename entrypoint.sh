@@ -110,6 +110,11 @@ if [ -d "$WORKSPACE/src/extensions" ]; then
     rm -rf "$AGENT_DIR/extensions" && cp -r "$WORKSPACE/src/extensions" "$AGENT_DIR/extensions"
 fi
 
+if [ -f "$WORKSPACE/src/APPEND_SYSTEM.md" ]; then
+    echo "[Agent] Copying APPEND_SYSTEM.md from workspace..."
+    cp "$WORKSPACE/src/APPEND_SYSTEM.md" "$AGENT_DIR/APPEND_SYSTEM.md"
+fi
+
 if [ -d "$WORKSPACE/src/.pi" ]; then
     echo "[Agent] Copying .pi configuration from workspace..."
     cp -r "$WORKSPACE/src/.pi/." "$AGENT_DIR/"
