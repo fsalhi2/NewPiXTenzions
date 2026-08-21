@@ -85,15 +85,11 @@ else
 const fs = require("fs");
 const path = require("path");
 const agentDir = "/root/.pi/agent";
-const baselineRev = process.env.BASELINE_REV;
-let settings = {};
+const baselineRev = process.env.BASELINE_REV || "unknown";
+let settings = { baseline_revision: baselineRev };
 const settingsPath = path.join(agentDir, "settings.json");
-if (fs.existsSync(settingsPath)) {
-    settings = JSON.parse(fs.readFileSync(settingsPath, "utf8"));
-}
-settings.baseline_revision = baselineRev;
 fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
-console.log("[Agent] settings.json enriched with baseline: " + baselineRev);
+console.log("[Agent] baseline settings.json created with revision: " + baselineRev);
 '
 fi
 
