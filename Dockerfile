@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     tmux \
     curl \
     ca-certificates \
+    docker.io \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Install pi
