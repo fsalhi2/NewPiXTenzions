@@ -37,8 +37,6 @@ if [ -n "$PI_AUTH_JSON" ]; then
     echo "[Agent] Injecting authentication tokens..."
     echo "$PI_AUTH_JSON" > "$AGENT_DIR/auth.json"
     chmod 600 "$AGENT_DIR/auth.json"
-elif [ "$(ls -A $AGENT_DIR/auth.json 2>/dev/null || true)" != "" ]; then
-    echo "[Agent] Using existing auth.json"
 else
     echo "[Agent] Building auth.json from individual environment variables..."
     node -e '
@@ -62,7 +60,9 @@ if (Object.keys(auth).length > 0) {
 fi
 
 # Injecting models and settings
-# We use symlinks for versioned files to ensure they are parameterized from the workspace
+echo "[Agent] Configuring models and settings..."
+
+# 1. Models
 if [ -f "$WORKSPACE/src/models.json" ]; then
     echo "[Agent] Linking models.json from workspace..."
     ln -sf "$WORKSPACE/src/models.json" "$AGENT_DIR/models.json"
@@ -72,15 +72,16 @@ if [ -f "$WORKSPACE/src/models-store.json" ]; then
     ln -sf "$WORKSPACE/src/models-store.json" "$AGENT_DIR/models-store.json"
 fi
 
-if [ -n "$PI_SETTINGS_JSON" ]; then
-    echo "[Agent] Injecting settings from environment..."
-    echo "$PI_SETTINGS_JSON" > "$AGENT_DIR/settings.json"
-elif [ -f "$WORKSPACE/src/settings.json" ]; then
+# 2. Settings - Workspace priority as requested
+if [ -f "$WORKSPACE/src/settings.json" ]; then
     echo "[Agent] Linking settings.json from workspace..."
     ln -sf "$WORKSPACE/src/settings.json" "$AGENT_DIR/settings.json"
+elif [ -n "$PI_SETTINGS_JSON" ]; then
+    echo "[Agent] Injecting settings from environment variable..."
+    echo "$PI_SETTINGS_JSON" > "$AGENT_DIR/settings.json"
 else
-    echo "[Agent] Generating baseline info..."
-    BASELINE_REV=$(git rev-parse HEAD~1 2>/dev/null || echo "none")
+    echo "[Agent] No settings found in workspace or env. Generating baseline..."
+    BASELINE_REV=$(git rev-parse HEAD~1 2>/dev/null || echo "unknown")
     node -e '
 const fs = require("fs");
 const path = require("path");
@@ -91,6 +92,22 @@ const settingsPath = path.join(agentDir, "settings.json");
 fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
 console.log("[Agent] baseline settings.json created with revision: " + baselineRev);
 '
+fi
+
+# Linking assets for the agent (prompts, bins, extensions)
+if [ -d "$WORKSPACE/src/prompts" ]; then
+    echo "[Agent] Linking prompts from workspace..."
+    ln -s "$WORKSPACE/src/prompts" "$AGENT_DIR/prompts"
+fi
+
+if [ -d "$WORKSPACE/src/bin" ]; then
+    echo "[Agent] Linking bins from workspace..."
+    ln -s "$WORKSPACE/src/bin" "$AGENT_DIR/bin"
+fi
+
+if [ -d "$WORKSPACE/src/extensions" ]; then
+    echo "[Agent] Linking extensions from workspace..."
+    ln -s "$WORKSPACE/src/extensions" "$AGENT_DIR/extensions"
 fi
 
 # Injecting tests into the root for easy access
