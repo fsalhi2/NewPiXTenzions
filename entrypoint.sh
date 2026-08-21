@@ -110,6 +110,11 @@ if [ -d "$WORKSPACE/src/extensions" ]; then
     rm -rf "$AGENT_DIR/extensions" && cp -r "$WORKSPACE/src/extensions" "$AGENT_DIR/extensions"
 fi
 
+if [ -d "$WORKSPACE/src/.pi" ]; then
+    echo "[Agent] Copying .pi configuration from workspace..."
+    cp -r "$WORKSPACE/src/.pi/." "$AGENT_DIR/"
+fi
+
 # Injecting tests into the root for easy access
 if [ -d "$WORKSPACE/tests" ]; then
     echo "[Agent] Injecting tests to /tests..."

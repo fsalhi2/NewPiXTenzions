@@ -35,13 +35,13 @@ echo "Sending 'Hello' to trigger the system prompt check..."
 tmux send-keys -t $SESSION "Hello" Enter
 sleep 2
 
-echo "Checking for 'SYSTEM_PROMPT_UPDATED' in the output..."
+echo "Checking for 'ROBOT_ACTIVE' in the output..."
 # We might need to wait a bit for the LLM to respond
 MAX_RETRIES=20
 COUNT=0
 FOUND=false
 while [ $COUNT -lt $MAX_RETRIES ]; do
-    if tmux capture-pane -t $SESSION -p | grep -q "SYSTEM_PROMPT_UPDATED"; then
+    if tmux capture-pane -t $SESSION -p | grep -q "ROBOT_ACTIVE"; then
         FOUND=true
         break
     fi
@@ -56,7 +56,7 @@ if [ "$FOUND" = true ]; then
     exit 0
 else
     echo "--------------------------------------------------"
-    echo "❌ E2E TEST FAILED: 'SYSTEM_PROMPT_UPDATED' not found in output!"
+    echo "❌ E2E TEST FAILED: 'ROBOT_ACTIVE' not found in output!"
     echo "--------------------------------------------------"
     echo "Current pane content:"
     tmux capture-pane -t $SESSION -p
