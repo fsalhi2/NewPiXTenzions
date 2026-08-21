@@ -1,0 +1,89 @@
+{
+  "providers": {
+    "runpod": {
+      "baseUrl": "https://api.runpod.ai/v2/7cca1mfubgflvg/openai/v1",
+      "api": "openai-completions",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false
+      },
+      "models": [
+        {
+          "id": "chat-reflexion",
+          "name": "Qwen3 30B A3B Thinking (Runpod)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 131072,
+          "maxTokens": 32768,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    },
+    "runpod-gemma4": {
+      "baseUrl": "https://famg4hwc1skunk.api.runpod.ai/v1",
+      "api": "openai-completions",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false,
+        "thinkingFormat": "chat-template",
+        "chatTemplateKwargs": {
+          "enable_thinking": {
+            "$var": "thinking.enabled"
+          },
+          "preserve_thinking": true
+        }
+      },
+      "models": [
+        {
+          "id": "chat-reflexion-gemma4",
+          "name": "Gemma 4 26B-A4B (Runpod LB)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 262144,
+          "maxTokens": 32768,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    },
+    "openrouter-glm": {
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "api": "openai-completions",
+      "compat": {
+        "thinkingFormat": "openrouter"
+      },
+      "models": [
+        {
+          "id": "z-ai/glm-4.7",
+          "name": "GLM 4.7 (OpenRouter)",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 204800,
+          "maxTokens": 32768,
+          "cost": {
+            "input": 0.4,
+            "output": 1.75,
+            "cacheRead": 0.08,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    }
+  }
+}

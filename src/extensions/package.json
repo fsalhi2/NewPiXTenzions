@@ -1,0 +1,8 @@
+{
+  "name": "my-extensions",
+  "version": "0.1.0",
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "latest",
+    "typebox": "latest"
+  }
+}

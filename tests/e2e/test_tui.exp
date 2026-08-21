@@ -1,0 +1,22 @@
+#!/usr/bin/expect -f
+
+set timeout 10
+
+# Start pi
+spawn pi
+
+# Wait for the extension notification
+expect "Hello extension loaded!"
+
+# Send the hello command
+send "/hello\r"
+
+# Wait for the response (the notification "Hello world!")
+expect "Hello world!"
+
+# Exit pi
+send "\r"
+expect eof
+
+puts "\nE2E Test Passed: Hello command worked!"
+exit 0

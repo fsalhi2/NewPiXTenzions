@@ -1,0 +1,23 @@
+{
+  "defaultModel": "chat-reflexion-gemma4",
+  "defaultProvider": "runpod-gemma4",
+  "defaultThinkingLevel": "high",
+  "lastChangelogVersion": "0.84.2",
+  "retry": {
+    "baseDelayMs": 5000
+  },
+  "theme": "dark",
+  "compaction": {
+    "enabled": false,
+    "reserveTokens": 32768,
+    "keepRecentTokens": 20000
+  },
+  "enabledModels": [
+    "runpod/chat-reflexion",
+    "runpod-gemma4/chat-reflexion-gemma4",
+    "openrouter-glm/z-ai/glm-4.7"
+  ],
+  "packages": [
+    "extensions/hello.ts"
+  ]
+}
